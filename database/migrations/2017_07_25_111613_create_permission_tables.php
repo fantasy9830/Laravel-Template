@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePermissionTables extends Migration
 {
-    protected $connection = 'pgsql';
+    const CONNECTION = 'pgsql';
 
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreatePermissionTables extends Migration
      */
     public function up()
     {
-        Schema::connection($this->connection)
+        Schema::connection(self::CONNECTION)
             ->create('auth_roles', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name')->unique()->comment('Unique name for the Role, used for looking up role information in the application layer. For example: "admin", "owner", "employee".');
@@ -25,7 +25,7 @@ class CreatePermissionTables extends Migration
                 $table->timestamps();
             });
 
-        Schema::connection($this->connection)
+        Schema::connection(self::CONNECTION)
             ->create('auth_permissions', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name')->unique()->comment('Unique name for the permission, used for looking up permission information in the application layer. For example: "create-post", "edit-user", "post-payment", "mailing-list-subscribe".');
@@ -35,7 +35,7 @@ class CreatePermissionTables extends Migration
                 $table->timestamps();
             });
 
-        Schema::connection($this->connection)
+        Schema::connection(self::CONNECTION)
             ->create('auth_permission_role', function (Blueprint $table) {
                 $table->integer('permission_id')->unsigned();
                 $table->integer('role_id')->unsigned();
@@ -53,7 +53,7 @@ class CreatePermissionTables extends Migration
                 $table->primary(['permission_id', 'role_id']);
             });
 
-        Schema::connection($this->connection)
+        Schema::connection(self::CONNECTION)
             ->create('auth_role_user', function (Blueprint $table) {
                 $table->integer('role_id')->unsigned();
                 $table->string('user_id');
@@ -74,9 +74,9 @@ class CreatePermissionTables extends Migration
      */
     public function down()
     {
-        Schema::connection($this->connection)->dropIfExists('auth_permission_role');
-        Schema::connection($this->connection)->dropIfExists('auth_role_user');
-        Schema::connection($this->connection)->dropIfExists('auth_roles');
-        Schema::connection($this->connection)->dropIfExists('auth_permissions');
+        Schema::connection(self::CONNECTION)->dropIfExists('auth_permission_role');
+        Schema::connection(self::CONNECTION)->dropIfExists('auth_role_user');
+        Schema::connection(self::CONNECTION)->dropIfExists('auth_roles');
+        Schema::connection(self::CONNECTION)->dropIfExists('auth_permissions');
     }
 }
