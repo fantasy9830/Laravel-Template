@@ -7,7 +7,7 @@
 composer install
 ```
 
-## Recovery .nev
+## Recovery .env
 ```bash
 cp .env.example .env
 php artisan key:generate
